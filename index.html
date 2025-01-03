@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería de Fotos y Videos</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Estilo general */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('images/margaamarilla.jpg') no-repeat center center fixed; /* Imagen fija de fondo */
+      background-size: cover;
+      color: #333;
+    }
+
+    header {
+      padding: 10px;
+      background-color: rgba(247, 217, 83, 0.9); /* Fondo semitransparente */
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(247, 217, 83, 0.9);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #000000;
+    }
+    
+
+    .gallery-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .gallery-item img,
+    .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 15px;
+    }
+
+    .gallery-item:hover img {
+      filter: brightness(0.8);
+    }
+
+    .pagination {
+     position: fixed; /* Mantiene la paginación fija */
+     bottom: 0; /* Anclado a la parte inferior */
+     left: 0; /* Anclado al borde izquierdo */
+     width: 100%; /* Ocupa todo el ancho */
+     text-align: center;
+     padding: 20px;
+     background-color: rgba(247, 217, 83, 0.9); /* Fondo semitransparente */
+     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+     z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    }
+
+
+    .page-btn {
+      background-color: #ffe881;
+      color: #000000;
+      border: none;
+      padding: 10px 15px;
+      margin: 0 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .page-btn:hover {
+      background-color: #ffcc00;
+    }
+
+    .page-btn.active {
+      background-color: #ffcc00;
+      color: #333;
+      font-weight: bold;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="gallery-title">Galería de Enero</h1>
+  </header>
+  <main class="gallery-container" id="gallery-container">
+    <!-- Contenido dinámico aquí -->
+  </main>
+  <footer class="pagination">
+    <button class="page-btn" onclick="changeMonth('prev')">Atrás</button>
+    <button class="page-btn" onclick="setMonth('enero')">Enero</button>
+    <button class="page-btn" onclick="setMonth('febrero')">Febrero</button>
+    <button class="page-btn" onclick="setMonth('marzo')">Marzo</button>
+    <button class="page-btn" onclick="setMonth('abril')">Abril</button>
+    <button class="page-btn" onclick="setMonth('mayo')">Mayo</button>
+    <button class="page-btn" onclick="setMonth('junio')">Junio</button>
+    <button class="page-btn" onclick="setMonth('julio')">Julio</button>
+    <button class="page-btn" onclick="setMonth('agosto')">Agosto</button>
+    <button class="page-btn" onclick="setMonth('septiembre')">Septiembre</button>
+    <button class="page-btn" onclick="setMonth('octubre')">Octubre</button>
+    <button class="page-btn" onclick="setMonth('noviembre')">Noviembre</button>
+    <button class="page-btn" onclick="setMonth('diciembre')">Diciembre</button>
+    <button class="page-btn" onclick="changeMonth('next')">Próximo</button>
+  </footer>
+
+  <script>
+    const months = [ "inicio", "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    let currentMonthIndex = 0;
+
+    const galleryData = {
+     
+      inicio: [
+       {
+        type: "text",
+        content: "Esta es una galería donde podés encontrar fotos y videos nuestros a lo largo de este año. No podemos decir que fue un año maravilloso porque tuvo de todo un poco, momentos felices, peleas, discuciones, lloraditas, momentos muy especiales (mi primer carnet de manejo, tu pasada a segundo, la mejora de Fabri, mi primera placa, nuevas amistades y muchos más)y sobre todo aprendizajes que nos hicieron crecer. Cada imagen y video cuenta una pequeña historia, desde risas compartidas hasta instantes de enojo y calentura. Espero que al recorrer esta galería puedas revivir esos momentos especiales a lo largo de este año."
+       }
+      ],
+
+      enero: [  
+      { type: "image", src: "images/20240109_135335.jpg", alt: "Foto 1" },
+        { type: "image", src: "images/20240113_220130.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/20240130_230853.jpg", alt: "Foto 3" },
+        { type: "video", src: "images/20240113_212926.mp4" },
+        { type: "image", src: "images/20240109_143423_HDR.jpg", alt: "Foto 4" }
+        
+      ],
+      febrero: [
+      { type: "image", src: "images/IMG-20240207-WA0031.jpg", alt: "Foto 1" },
+        { type: "image", src: "images/IMG-20240220-WA0028.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/20240222_214506.jpg", alt: "Foto 3" },
+        { type: "image", src: "images/IMG-20240207-WA0022.jpg", alt: "Foto 4" },
+        { type: "image", src: "images/20240229_230817.jpg", alt: "Foto 5" }
+      ],
+      marzo: [
+      { type: "image", src: "images/20240331_061823.jpg", alt: "Foto 1" },
+        { type: "image", src: "images/IMG-20240319-WA0023.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/IMG-20240323-WA0038.jpg", alt: "Foto 3" },
+        { type: "video", src: "images/VID-20240305-WA0003.mp4" },
+        { type: "image", src: "images/IMG-20240331-WA0008.jpg", alt: "Foto 4" }
+      ],
+     
+      abril: [
+      { type: "image", src: "images/IMG-20240412-WA0019.jpg", alt: "Foto 1" },
+        { type: "image", src: "images/20240412_225723.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/IMG-20240422-WA0022.jpg", alt: "Foto 3" },
+        { type: "image", src: "images/IMG-20240427-WA0049.jpg" },
+        { type: "image", src: "images/20240412_225726.jpg", alt: "Foto 4" }
+      ],
+      mayo: [
+      { type: "video", src: "images/mayo3.mp4" },
+      { type: "image", src: "images/mayo.jpg", alt: "Foto 1" },
+        { type: "image", src: "images/IMG-20240604-WA0075.jpg", alt: "Foto 3" },
+        { type: "video", src: "images/mayo4.mp4" },
+        { type: "image", src: "images/mayo5.jpg" },
+      ],
+      junio: [
+      { type: "image", src: "images/junio.jpg", alt: "Foto 1" },
+        { type: "image", src: "images/IMG_20240622_003429799_HDR.jpg", alt: "Foto 2" },
+        { type: "video", src: "images/junio2.mp4" },
+        { type: "image", src: "images/IMG_20240607_200828_297.webp" },
+        { type: "video", src: "images/junioooo.mp4" },
+      ],
+      julio: [
+      { type: "image", src: "images/IMG-20240713-WA0044.jpg", alt: "Foto 1" },
+        { type: "image", src: "images/IMG_20240702_201148640.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/IMG_20240710_164628_661.webp", alt: "Foto 2" },
+        { type: "image", src: "images/IMG_20240710_164905_810.webp", alt: "Foto 2" },
+        { type: "image", src: "images/julio1.jpg" },
+      ],
+      agosto: [
+      { type: "image", src: "images/IMG_20240819_134213679_HDR.jpg", alt: "Foto 1" },
+       { type: "image", src: "images/IMG_20240824_213808978.jpg", alt: "Foto 2" },
+       { type: "video", src: "images/agosto.mp4" },
+       { type: "image", src: "images/agosto1.jpg" },
+       { type: "image", src: "images/agosto2.jpg" },
+      ],
+      septiembre: [
+      { type: "image", src: "images/septiembre.webp", alt: "Foto 1" },
+        { type: "image", src: "images/IMG-20240908-WA0096.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/IMG_20240901_192643836.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/IMG-20240910-WA0082.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/IMG_20240921_224421441.jpg" },
+      ],
+      octubre: [
+      { type: "video", src: "images/octubre7.mp4" },
+        { type: "image", src: "images/IMG-20241016-WA0021.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/octubre2.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/IMG-20241021-WA0077.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/IMG_20241027_030418438.jpg" },
+      ],
+      noviembre: [
+      { type: "image", src: "images/IMG_20241109_180629100_HDR.jpg", alt: "Foto 1" },
+        { type: "image", src: "images/noviembre.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/noviembre1.jpg", alt: "Foto 2" },
+        { type: "video", src: "images/noviembre5.mp4", alt: "Foto 2" },
+        { type: "image", src: "images/noviembre4.jpg" },
+      ],
+      diciembre: [
+      { type: "image", src: "images/diciembre.jpg", alt: "Foto 1" },
+        { type: "image", src: "images/diciembre1.jpg", alt: "Foto 2" },
+        { type: "image", src: "images/diciembre2.jpg", alt: "Foto 2" },
+        { type: "video", src: "images/diciembre4.mp4", alt: "Foto 2" },
+        { type: "image", src: "images/diciembre3.jpg" },
+      ],
+    };
+
+    function setMonth(month) {
+      currentMonthIndex = months.indexOf(month);
+      renderGallery();
+    }
+
+    function changeMonth(direction) {
+      if (direction === "prev") {
+        currentMonthIndex = (currentMonthIndex - 1 + months.length) % months.length;
+      } else if (direction === "next") {
+        currentMonthIndex = (currentMonthIndex + 1) % months.length;
+      }
+      renderGallery();
+    }
+
+    function renderGallery() {
+  const month = months[currentMonthIndex];
+  const galleryTitle = document.getElementById("gallery-title");
+  const galleryContainer = document.getElementById("gallery-container");
+
+  galleryTitle.textContent = `Galería de ${month.charAt(0).toUpperCase() + month.slice(1)}`;
+  galleryContainer.innerHTML = "";
+
+  galleryData[month].forEach((item) => {
+    const galleryItem = document.createElement("div");
+    galleryItem.className = "gallery-item";
+
+    if (item.type === "image") {
+      const img = document.createElement("img");
+      img.src = item.src;
+      img.alt = item.alt;
+      galleryItem.appendChild(img);
+    } else if (item.type === "video") {
+      const video = document.createElement("video");
+      video.controls = true;
+      const source = document.createElement("source");
+      source.src = item.src;
+      source.type = "video/mp4";
+      video.appendChild(source);
+      galleryItem.appendChild(video);
+    } else if (item.type === "text") {
+      const text = document.createElement("p");
+      text.textContent = item.content;
+      text.style.padding = "20px";
+      text.style.background = "rgba(255, 255, 255, 0.8)";
+      text.style.borderRadius = "10px";
+      galleryItem.appendChild(text);
+    }
+
+    galleryContainer.appendChild(galleryItem);
+  });
+}
+
+
+    // Render inicial
+    setMonth('inicio');
+  </script>
+</body>
+</html>
